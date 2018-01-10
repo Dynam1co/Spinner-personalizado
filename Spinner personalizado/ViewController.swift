@@ -8,18 +8,41 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+extension UIView {
+    func startRotating(duration: Double = 1) {
+        let kAnimationKey = "rotation"
+        
+        if self.layer.animation(forKey: kAnimationKey) == nil {
+            let animate = CABasicAnimation(keyPath: "transform.rotation")
+            animate.duration = duration
+            animate.repeatCount = Float.infinity
+            animate.fromValue = 0.0
+            animate.toValue = Float(Double.pi)
+            self.layer.add(animate, forKey: kAnimationKey)
+        }
+    }
+    func stopRotating() {
+        let kAnimationKey = "rotation"
+        
+        if self.layer.animation(forKey: kAnimationKey) != nil {
+            self.layer.removeAnimation(forKey: kAnimationKey)
+        }
+    }
+}
 
+class ViewController: UIViewController {
+    @IBOutlet weak var imgLoading: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func bt_arrancar_click(_ sender: UIButton) {
+        imgLoading.startRotating()
     }
-
-
+    
+    @IBAction func bt_parar_click(_ sender: UIButton) {
+        imgLoading.stopRotating()
+    }
 }
 
